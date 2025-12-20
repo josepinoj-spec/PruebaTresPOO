@@ -1,0 +1,68 @@
+
+from abc import ABC, abstractmethod
+
+class CanalNotificacion(ABC):
+    def __init__(self, destino):
+        self._destino = destino
+
+    @abstractmethod
+    def validar_destino(self):
+        pass
+
+    @abstractmethod
+    def enviar(self, mensaje):
+        pass
+
+    @abstractmethod
+    def costo(self):
+        pass
+
+
+class Email(CanalNotificacion):
+    def validar_destino(self):
+        return "@" in self._destino
+
+    def enviar(self, mensaje):
+        if not mensaje:
+            raise ValueError("Mensaje vacío")
+        return True
+
+    def costo(self):
+        return 50
+
+
+class SMS(CanalNotificacion):
+    def validar_destino(self):
+        return self._destino.isdigit() and len(self._destino) == 9
+
+    def enviar(self, mensaje):
+        if len(mensaje) > 160:
+            raise ValueError("Mensaje SMS demasiado largo")
+        return True
+
+    def costo(self):
+        return 100
+
+
+class GestorNotificaciones:
+    def __init__(self):
+        self._canales = []
+
+    def agregar_canal(self, canal):
+        if canal.validar_destino():
+            self._canales.append(canal)
+
+    def enviar_mensaje(self, mensaje):
+        exitos = 0
+        fallos = 0
+        total = 0
+
+        for canal in self._canales:
+            try:
+                canal.enviar(mensaje)
+                exitos += 1
+                total += canal.costo()
+            except Exception:
+                fallos += 1
+
+        return exitos, fallos, total
