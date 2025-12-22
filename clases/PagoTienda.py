@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 
-class MedioPago(ABC):
+class PagoTiend(ABC):
     def __init__(self, nombre):
         self.__nombre = nombre
 

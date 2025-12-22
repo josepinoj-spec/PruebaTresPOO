@@ -4,7 +4,7 @@ from math import ceil
 
 
 
-class Vehiculo(ABC):
+class Tarificador(ABC):
     def __init__(self, patente, entrada, salida):
         self.__patente = patente
         self.__entrada = entrada
@@ -23,7 +23,7 @@ class Vehiculo(ABC):
         pass
     
     
-class Auto(Vehiculo):
+class Auto(Tarificador):
     TARIFA = 1500
 
     def calcular_tarifa(self):
@@ -33,7 +33,7 @@ class Auto(Vehiculo):
         return int(total)
 
 
-class Moto(Vehiculo):
+class Moto(Tarificador):
     TARIFA = 800
 
     def calcular_tarifa(self):
@@ -43,7 +43,7 @@ class Moto(Vehiculo):
         return int(total)
 
 
-class Camion(Vehiculo):
+class Camion(Tarificador):
     TARIFA = 3000
 
     def calcular_tarifa(self):

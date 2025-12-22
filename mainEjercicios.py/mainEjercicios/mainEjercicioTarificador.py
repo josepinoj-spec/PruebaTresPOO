@@ -1,5 +1,5 @@
 
-from clases.estacionamiento import Estacionamiento
+from ..clases.Tarificador import estacionamiento 
 from clases.auto import Auto
 from clases.moto import Moto
 from clases.camion import Camion

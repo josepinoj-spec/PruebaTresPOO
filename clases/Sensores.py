@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Sensor(ABC):
+class Sensores(ABC):
     def __init__(self, nombre):
         self.__nombre = nombre
         self.__lecturas = []
@@ -28,7 +28,7 @@ class Sensor(ABC):
         pass
 
 
-class SensorTemperatura(Sensor):
+class SensorTemperatura(Sensores):
     def __init__(self):
         super().__init__("Temperatura (°C)")
 
@@ -41,7 +41,7 @@ class SensorTemperatura(Sensor):
         return -50 <= valor <= 100
 
 
-class SensorHumedad(Sensor):
+class SensorHumedad(Sensores):
     def __init__(self):
         super().__init__("Humedad (%)")
 
@@ -52,7 +52,7 @@ class SensorHumedad(Sensor):
         return 0 <= valor <= 100
 
 
-class SensorMovimiento(Sensor):
+class SensorMovimiento(Sensores):
     def __init__(self):
         super().__init__("Movimiento (eventos)")
 
