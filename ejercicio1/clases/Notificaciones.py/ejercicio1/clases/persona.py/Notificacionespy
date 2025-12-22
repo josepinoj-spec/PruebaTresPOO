@@ -12,24 +12,24 @@ class Notificacion(ABC):
 
     @abstractmethod
     def validar_destino(self) -> bool:
-        """Reglas mínimas del canal: formato/longitud/vacío."""
         pass
-
+        """Reglas mínimas del canal: formato/longitud/vacío."""
+        
     @abstractmethod
     def validar_mensaje(self, mensaje: str) -> bool:
-        """Reglas del mensaje (ej. longitud máxima, no vacío)."""
         pass
+        """Reglas del mensaje (ej. longitud máxima, no vacío)."""
 
     @abstractmethod
     def enviar(self, mensaje: str) -> bool:
-        """Simula el envío; retorna True si exitoso, False si falla."""
         pass
-
+        """Simula el envío; retorna True si exitoso, False si falla."""
+        
     @abstractmethod
     def costo(self, mensaje: str) -> float:
-        """Costo del envío considerando reglas del canal."""
         pass
-
+        """Costo del envío considerando reglas del canal."""
+        
     def __eq__(self, other) -> bool:
         return isinstance(other, Notificacion) and self.destino.lower() == other.destino.lower()
 
@@ -66,13 +66,12 @@ class CanalCorreo(Notificacion):
         return isinstance(mensaje, str) and mensaje.strip() != ""
 
     def enviar(self, mensaje: str) -> bool:
-        # Simulación: el correo rara vez falla
         return self.validar_destino() and self.validar_mensaje(mensaje)
-
+        # Simulación: el correo rara vez falla
+        
     def costo(self, mensaje: str) -> float:
-        # Costo fijo por correo
         return self._costo_base
-
+        # Costo fijo por correo
 
 class CanalSMS(Notificacion):
     MAX_LEN = 160
@@ -87,14 +86,13 @@ class CanalSMS(Notificacion):
         return isinstance(mensaje, str) and mensaje.strip() != "" and len(mensaje) <= self.MAX_LEN
 
     def enviar(self, mensaje: str) -> bool:
-        # Simulación simple: si se pasa de 160, no envía
         return self.validar_destino() and self.validar_mensaje(mensaje)
-
+        # Simulación simple: si se pasa de 160, no envía
+        
     def costo(self, mensaje: str) -> float:
-        # Costo por segmento de 160 caracteres (redondeo hacia arriba)
         segmentos = (len(mensaje) // self.MAX_LEN) + (1 if len(mensaje) % self.MAX_LEN else 0)
         return self._costo_base * segmentos
-
+        # Costo por segmento de 160 caracteres (redondeo hacia arriba)
 
 class CanalWebhook(Notificacion):
     def __init__(self, url_o_token: str):
@@ -107,10 +105,9 @@ class CanalWebhook(Notificacion):
         return isinstance(mensaje, str) and mensaje.strip() != ""
 
     def enviar(self, mensaje: str) -> bool:
-        # Simula posible fallo si token/url es muy corto
         return self.validar_destino() and self.validar_mensaje(mensaje)
-
+        # Simula posible fallo si token/url es muy corto
+        
     def costo(self, mensaje: str) -> float:
-        # Costo variable por longitud (simulada)
         return self._costo_base + (len(mensaje) * 0.001)
-
+        # Costo variable por longitud (simulada)
