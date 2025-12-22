@@ -1,42 +1,79 @@
 
 from abc import ABC, abstractmethod
-import math
+from math import ceil
+
+
 
 class Vehiculo(ABC):
-    def __init__(self, patente, minutos):
-        self._patente = patente
-        self._minutos = minutos
+    def __init__(self, patente, entrada, salida):
+        self.__patente = patente
+        self.__entrada = entrada
+        self.__salida = salida
 
-    def horas(self):
-        return math.ceil(self._minutos / 60)
+    def horas_estadia(self):
+        minutos = self.salida - self.entrada
+        return ceil(minutos / 60)
+
+    def es_horario_punta(self):
+        hora = self.entrada // 60
+        return 18 <= hora < 21
 
     @abstractmethod
     def calcular_tarifa(self):
         pass
-
-
+    
+    
 class Auto(Vehiculo):
+    TARIFA = 1500
+
     def calcular_tarifa(self):
-        return self.horas() * 1000
+        total = self.horas_estadia() * self.TARIFA
+        if self.es_horario_punta():
+            total *= 1.2
+        return int(total)
 
 
 class Moto(Vehiculo):
+    TARIFA = 800
+
     def calcular_tarifa(self):
-        return self.horas() * 500
+        total = self.horas_estadia() * self.TARIFA
+        if self.es_horario_punta():
+            total *= 1.2
+        return int(total)
 
 
 class Camion(Vehiculo):
+    TARIFA = 3000
+
     def calcular_tarifa(self):
-        return self.horas() * 2000
+        total = self.horas_estadia() * self.TARIFA
+        if self.es_horario_punta():
+            total *= 1.2
+        return int(total)
 
 
 class Estacionamiento:
     def __init__(self):
-        self._registros = []
+        self.__estadias = []
 
     def registrar(self, vehiculo):
-        self._registros.append(vehiculo)
+        self.estadias.append(vehiculo)
 
-    def total_recaudado(self):
-        return sum(v.calcular_tarifa() for v in self._registros)
+    def generar_reporte(self):
+        total = 0
+        cobros = []
+        tipos = {}
+
+        for v in self.estadias:
+            cobro = v.calcular_tarifa()
+            total += cobro
+            cobros.append(cobro)
+
+            tipo = type(v).__name__.lower()
+            tipos[tipo] = tipos.get(tipo, 0) + 1
+
+        top3 = sorted(cobros, reverse=True)[:3]
+
+        return total, top3, tipos
 
