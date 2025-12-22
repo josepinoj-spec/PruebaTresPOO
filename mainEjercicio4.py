@@ -1,26 +1,30 @@
 
-from clases import (
-    SensorTemperatura,
-    SensorHumedad,
-    SensorMovimiento,
-    SistemaSensores
-)
+from clases.sensortemperatura import SensorTemperatura
+from clases.sensorhumedad import SensorHumedad
+from clases.sensormovimiento import SensorMovimiento
+from clases.sistema_iot import SistemaIoT
 
-def main():
-    sistema = SistemaSensores()
+sistema = SistemaIoT()
 
-    print("=== SISTEMA DE SENSORES ===")
+temp = SensorTemperatura()
+hum = SensorHumedad()
+mov = SensorMovimiento()
 
-    sistema.agregar(SensorTemperatura(25))
-    sistema.agregar(SensorHumedad(55))
-    sistema.agregar(SensorMovimiento(1))
+sistema.registrar_sensor(temp)
+sistema.registrar_sensor(hum)
+sistema.registrar_sensor(mov)
 
-    reporte = sistema.reporte()
+# Lecturas simuladas
+temp.registrar_lectura(25, "C")
+temp.registrar_lectura(77, "F")
+temp.registrar_lectura(-10, "C")
 
-    print("\n--- REPORTE CONSOLIDADO ---")
-    print(f"Valor mínimo: {reporte['min']}")
-    print(f"Valor máximo: {reporte['max']}")
-    print(f"Promedio: {reporte['promedio']:.2f}")
+hum.registrar_lectura(45)
+hum.registrar_lectura(80)
+hum.registrar_lectura(110)  # inválida
 
-if __name__ == "__main__":
-    main()
+mov.registrar_lectura(3)
+mov.registrar_lectura(7)
+mov.registrar_lectura(0)
+
+sistema.generar_reporte()
