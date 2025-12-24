@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 class Sensores(ABC):
     def __init__(self, nombre):
-        self.__nombre = nombre
-        self.__lecturas = []
+        self._nombre = nombre
+        self._lecturas = []
 
     def registrar_lectura(self, valor, unidad=None):
         valor_normalizado = self.normalizar(valor, unidad)
@@ -45,7 +45,7 @@ class SensorHumedad(Sensores):
     def __init__(self):
         super().__init__("Humedad (%)")
 
-    def normalizar(self, valor, unidad=None):
+    def normalizar(self, valor, unidad =None):
         return valor
 
     def validar(self, valor):

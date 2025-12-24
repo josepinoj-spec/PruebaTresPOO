@@ -6,9 +6,9 @@ from math import ceil
 
 class Tarificador(ABC):
     def __init__(self, patente, entrada, salida):
-        self.__patente = patente
-        self.__entrada = entrada
-        self.__salida = salida
+        self._patente = patente
+        self._entrada = entrada
+        self._salida = salida
 
     def horas_estadia(self):
         minutos = self.salida - self.entrada
@@ -55,7 +55,7 @@ class Camion(Tarificador):
 
 class Estacionamiento:
     def __init__(self):
-        self.__estadias = []
+        self._estadias = []
 
     def registrar(self, vehiculo):
         self.estadias.append(vehiculo)

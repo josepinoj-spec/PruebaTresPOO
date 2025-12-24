@@ -1,9 +1,9 @@
 
 from abc import ABC, abstractmethod
 
-class PagoTiend(ABC):
+class PagoTienda(ABC):
     def __init__(self, nombre):
-        self.__nombre = nombre
+        self._nombre = nombre
 
     @abstractmethod
     def validar(self, monto):
@@ -14,10 +14,10 @@ class PagoTiend(ABC):
         pass
 
 
-class Tarjeta(MedioPago):
+class Tarjeta(PagoTienda):
     def __init__(self, cupo):
         super().__init__("Tarjeta")
-        self.cupo = cupo
+        self._cupo = cupo
 
     def validar(self, monto):
         return monto <= self.cupo
@@ -27,10 +27,10 @@ class Tarjeta(MedioPago):
     
 
 
-class Transferencia(MedioPago):
+class Transferencia(PagoTienda):
     def __init__(self, confirmada):
         super().__init__("Transferencia")
-        self.__confirmada = confirmada
+        self._confirmada = confirmada
 
     def validar(self, monto):
         return self.confirmada
@@ -39,10 +39,10 @@ class Transferencia(MedioPago):
         return 0
 
 
-class BilleteraDigital(MedioPago):
+class BilleteraDigital(PagoTienda):
     def __init__(self, saldo):
         super().__init__("Billetera Digital")
-        self.___saldo = saldo
+        self._saldo = saldo
 
     def validar(self, monto):
         return monto <= self.saldo
@@ -52,10 +52,10 @@ class BilleteraDigital(MedioPago):
 
 class Venta:
     def __init__(self, id_venta, monto, medio_pago, recargo):
-        self.__id_venta = id_venta
-        self.__monto = monto
-        self.__medio_pago = medio_pago
-        self.__recargo = recargo
+        self._id_venta = id_venta
+        self._monto = monto
+        self._medio_pago = medio_pago
+        self._recargo = recargo
 
     def comprobante(self):
         total = self.monto + self.recargo
@@ -63,7 +63,7 @@ class Venta:
     
 class Tienda:
     def __init__(self):
-        self.__ventas = []
+        self._ventas = []
 
     def registrar_venta(self, venta):
         self.ventas.append(venta)

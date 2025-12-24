@@ -15,7 +15,7 @@ class Notificacion(ABC):
 
 class Correo(Notificacion):
     def __init__(self, email: str):
-        self.email = email
+        self._email = email
 
     def validar_destino(self) -> bool:
         return "@" in self.email and "." in self.email
@@ -26,7 +26,7 @@ class Correo(Notificacion):
 
 class MensajeSMS(Notificacion):
     def __init__(self, numero: str):
-        self.numero = numero
+        self._numero = numero
 
     def validar_destino(self) -> bool:
         return self.numero.isdigit() and len(self.numero) >= 8
@@ -37,7 +37,7 @@ class MensajeSMS(Notificacion):
 
 class Webhook(Notificacion):
     def __init__(self, url: str):
-        self.url = url
+        self._url = url
 
     def validar_destino(self) -> bool:
         return self.url.startswith("http")
